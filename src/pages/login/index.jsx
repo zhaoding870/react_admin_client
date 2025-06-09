@@ -1,8 +1,12 @@
 import React from 'react';
 
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
+import { reqLogin } from '../../api'; // 引入API接口文件
+import userCache from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 
 import './index.less';
 import logo from './images/logo.png'
@@ -12,9 +16,31 @@ import logo from './images/logo.png'
  * @returns 登录组件
  */
 export default function Login() {
+    const [messageApi, contextHolder] = message.useMessage();
 
-    const onFinish = values => {
+    const navigate = useNavigate();
+
+    const onFinish = async values => {
         console.log('Received values of form: ', values);
+        const { username, password } = values;
+        const result = await reqLogin(username, password);
+        if (result.status === 0) {
+            messageApi.open({
+                type: 'success',
+                content: '登录成功'
+            });
+            userCache.user = result.data;
+            storageUtils.saveUser(result.data); // 将用户信息保存到本地存储
+            // 跳转到主页
+            // 这里可以使用路由跳转到主页，例如使用 useNavigate() 钩子
+            // navigate('/'); // 假设主页路由是 '/'
+            navigate('/', { replace: true }); // 使用 replace 替换当前路由，避免返回时回到登录页
+        } else {
+            messageApi.open({
+                type: 'error',
+                content: result.msg,
+            });
+        }
     };
 
     // 自定义密码验证规则
@@ -35,6 +61,7 @@ export default function Login() {
 
     return (
         <div className='login'>
+            {contextHolder}
             <header className='login-header'>
                 <img src={logo} alt='logo' />
                 <h1>React 后台管理系统</h1>
