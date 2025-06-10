@@ -32,7 +32,7 @@ const items = [
             { key: '9', icon: <MailOutlined />, label: '饼图' },
         ]
     },
-    { key: '8', icon: <MailOutlined />, label: '订单管理' }
+    { key: '10', icon: <MailOutlined />, label: '订单管理' }
 ];
 
 export default function LeftNav() {

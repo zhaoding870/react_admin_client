@@ -1,15 +1,13 @@
 import React from 'react';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 
 import { ConfigProvider } from 'antd';
 
-
-import Admin from './pages/admin';
-import Login from './pages/login';
-
+import routers from './routes';
 
 export default function App() {
+    const elements = useRoutes(routers);
     return (
         <ConfigProvider
             theme={{
@@ -18,12 +16,8 @@ export default function App() {
                 }
             }}
         >
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Admin />} />
-                    <Route path="/login" element={<Login />} />
-                </Routes>
-            </BrowserRouter>
+
+            {elements}
         </ConfigProvider >
     )
 }

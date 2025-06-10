@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 import { Layout } from 'antd';
 
@@ -24,7 +24,8 @@ export default function Admin() {
             <Layout>
                 <Header />
                 <Content style={{ margin: '0 16px', backgroundColor: '#fff' }}>
-                    content
+                    <Outlet />
+                    {/* Outlet 用于渲染子路由组件 */}
                 </Content>
                 <Footer style={{ textAlign: 'center', color: '#cccccc' }}>
                     推荐使用谷歌浏览器，可以获得更佳页面操作体验
